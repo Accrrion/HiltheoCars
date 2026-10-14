@@ -1,0 +1,469 @@
+:root {
+  --dealership-ai-primary: #155eef;
+  --dealership-ai-primary-dark: #1049c5;
+  --dealership-ai-text: #172033;
+  --dealership-ai-muted: #667085;
+  --dealership-ai-border: #e6eaf0;
+  --dealership-ai-surface: #ffffff;
+  --dealership-ai-soft: #f5f7fb;
+  --dealership-ai-shadow: 0 24px 70px rgba(16, 24, 40, 0.2);
+}
+
+.dealership-ai,
+.dealership-ai * {
+  box-sizing: border-box;
+}
+
+.dealership-ai {
+  position: fixed;
+  right: max(24px, env(safe-area-inset-right));
+  bottom: max(24px, env(safe-area-inset-bottom));
+  z-index: 9999;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--dealership-ai-text);
+}
+
+.dealership-ai button,
+.dealership-ai input {
+  font: inherit;
+}
+
+.dealership-ai button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dealership-ai__launcher {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 64px;
+  height: 64px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--dealership-ai-primary), #3478ff);
+  box-shadow: 0 12px 32px rgba(21, 94, 239, 0.38);
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.dealership-ai__launcher:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(21, 94, 239, 0.43);
+}
+
+.dealership-ai__launcher:focus-visible,
+.dealership-ai__icon-button:focus-visible,
+.dealership-ai__suggestion:focus-visible,
+.dealership-ai__send:focus-visible {
+  outline: 3px solid #8bb7ff;
+  outline-offset: 3px;
+}
+
+.dealership-ai__launcher svg {
+  width: 25px;
+  height: 25px;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dealership-ai__launcher-label {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.dealership-ai__launcher--open {
+  min-width: 56px;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  background: #263246;
+  box-shadow: 0 10px 26px rgba(16, 24, 40, 0.24);
+}
+
+.dealership-ai__launcher--open svg {
+  width: 24px;
+  height: 24px;
+}
+
+.dealership-ai__launcher-pulse {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid white;
+  border-radius: 50%;
+  background: #25c685;
+}
+
+.dealership-ai__panel {
+  position: absolute;
+  right: 0;
+  bottom: 78px;
+  display: flex;
+  flex-direction: column;
+  width: min(390px, calc(100vw - 32px));
+  height: min(610px, calc(100dvh - 125px));
+  min-height: 420px;
+  overflow: hidden;
+  border: 1px solid rgba(230, 234, 240, 0.95);
+  border-radius: 22px;
+  background: var(--dealership-ai-surface);
+  box-shadow: var(--dealership-ai-shadow);
+  animation: dealership-ai-enter 180ms ease-out;
+}
+
+@keyframes dealership-ai-enter {
+  from { opacity: 0; transform: translateY(10px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.dealership-ai__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 18px 16px;
+  color: white;
+  background:
+    radial-gradient(circle at 90% 0%, rgba(255,255,255,.17), transparent 35%),
+    linear-gradient(125deg, #1049c5, #216cf3);
+}
+
+.dealership-ai__identity {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.dealership-ai__avatar,
+.dealership-ai__message-avatar {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 14px;
+  background: rgba(255,255,255,.16);
+}
+
+.dealership-ai__avatar svg,
+.dealership-ai__message-avatar svg {
+  width: 23px;
+  height: 23px;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dealership-ai__identity h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 750;
+  letter-spacing: -0.2px;
+}
+
+.dealership-ai__identity p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 5px 0 0;
+  color: rgba(255,255,255,.82);
+  font-size: 12px;
+}
+
+.dealership-ai__status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #5af0ae;
+  box-shadow: 0 0 0 3px rgba(90,240,174,.14);
+}
+
+.dealership-ai__icon-button {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 12px;
+  color: white;
+  background: rgba(255,255,255,.1);
+  cursor: pointer;
+}
+
+.dealership-ai__icon-button:hover {
+  background: rgba(255,255,255,.2);
+}
+
+.dealership-ai__icon-button svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.dealership-ai__messages {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px 14px 18px;
+  background: #fff;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.dealership-ai__demo-note {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 16px;
+  padding: 6px 9px;
+  border: 1px solid #e6ebf3;
+  border-radius: 999px;
+  color: #667085;
+  background: #f8faff;
+  font-size: 10px;
+  text-align: center;
+}
+
+.dealership-ai__message {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin: 13px 0;
+}
+
+.dealership-ai__message p {
+  max-width: 84%;
+  margin: 0;
+  padding: 11px 13px;
+  border-radius: 15px 15px 15px 5px;
+  color: #273247;
+  background: #f0f3f8;
+  font-size: 13px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.dealership-ai__message--user {
+  justify-content: flex-end;
+}
+
+.dealership-ai__message--user p {
+  border-radius: 15px 15px 5px 15px;
+  color: white;
+  background: var(--dealership-ai-primary);
+}
+
+.dealership-ai__message-avatar {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 10px;
+  color: var(--dealership-ai-primary);
+  background: #eaf1ff;
+}
+
+.dealership-ai__message-avatar svg {
+  width: 17px;
+  height: 17px;
+}
+
+.dealership-ai__suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 20px 0 0 36px;
+}
+
+.dealership-ai__suggestions-label {
+  margin-bottom: 2px;
+  color: #8993a5;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.dealership-ai__suggestion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 11px;
+  border: 1px solid #e3e9f3;
+  border-radius: 11px;
+  color: #344054;
+  background: white;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease;
+}
+
+.dealership-ai__suggestion:hover {
+  border-color: #a9c6ff;
+  background: #f7faff;
+}
+
+.dealership-ai__suggestion span {
+  color: var(--dealership-ai-primary);
+  font-size: 15px;
+}
+
+.dealership-ai__typing {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 13px;
+  border-radius: 15px 15px 15px 5px;
+  background: #f0f3f8;
+}
+
+.dealership-ai__typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #8793a7;
+  animation: dealership-ai-bounce 1s infinite ease-in-out;
+}
+
+.dealership-ai__typing span:nth-child(2) { animation-delay: 120ms; }
+.dealership-ai__typing span:nth-child(3) { animation-delay: 240ms; }
+
+@keyframes dealership-ai-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: .55; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+.dealership-ai__composer {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 13px;
+  padding: 8px;
+  border: 1px solid #e1e6ef;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 2px 7px rgba(16,24,40,.035);
+}
+
+.dealership-ai__composer:focus-within {
+  border-color: #8bb7ff;
+  box-shadow: 0 0 0 3px rgba(21,94,239,.09);
+}
+
+.dealership-ai__composer input {
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  padding: 8px 5px;
+  border: 0;
+  outline: 0;
+  color: var(--dealership-ai-text);
+  background: transparent;
+  font-size: 13px;
+}
+
+.dealership-ai__composer input::placeholder {
+  color: #98a2b3;
+}
+
+.dealership-ai__send {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 11px;
+  color: white;
+  background: var(--dealership-ai-primary);
+  cursor: pointer;
+  transition: background 150ms ease, opacity 150ms ease;
+}
+
+.dealership-ai__send:hover:not(:disabled) {
+  background: var(--dealership-ai-primary-dark);
+}
+
+.dealership-ai__send:disabled {
+  opacity: .42;
+  cursor: not-allowed;
+}
+
+.dealership-ai__send svg {
+  width: 19px;
+  height: 19px;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dealership-ai__footer {
+  padding: 10px 14px 13px;
+  color: #98a2b3;
+  font-size: 10px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.dealership-ai__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 480px) {
+  .dealership-ai {
+    right: max(14px, env(safe-area-inset-right));
+    bottom: max(14px, env(safe-area-inset-bottom));
+  }
+
+  .dealership-ai__panel {
+    position: fixed;
+    right: max(8px, env(safe-area-inset-right));
+    bottom: max(82px, calc(env(safe-area-inset-bottom) + 76px));
+    width: min(420px, calc(100vw - 16px));
+    height: min(680px, calc(100dvh - 100px));
+    min-height: 360px;
+    border-radius: 20px;
+  }
+
+  .dealership-ai__launcher {
+    height: 58px;
+    min-width: 58px;
+    padding: 0 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dealership-ai *,
+  .dealership-ai *::before,
+  .dealership-ai *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

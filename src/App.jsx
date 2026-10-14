@@ -1,4 +1,4 @@
-
+import FloatingAssistant from "./components/ai-agent/FloatingAssistant";
 import React, { createContext, useContext, useState, useEffect } from "react"
 import { Routes, Route, Link, useNavigate, Navigate, useLocation } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
@@ -1337,6 +1337,7 @@ export default function App(){
           <Route path="/signup" element={<AuthPage mode="signup"/>}/>
           <Route path="/admin" element={<ProtectedRoute requireUnlock={true}><Dashboard/></ProtectedRoute>}/>
         </Routes>
+        <FloatingAssistant />
       </div>
     </AuthProvider>
   )
